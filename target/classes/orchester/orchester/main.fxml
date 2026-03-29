@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="720.0" prefWidth="1120.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="orchester.controller.MainController">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="10.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+            </padding>
+            <children>
+                <Button mnemonicParsing="false" onAction="#handleLoadDefault" text="Nacitaj predvolene" />
+                <Button mnemonicParsing="false" onAction="#handleLoadFile" text="Nacitaj zo suboru" />
+                <Button mnemonicParsing="false" onAction="#handleSaveFile" text="Uloz do suboru" />
+                <Label fx:id="statusLabel" text="Pripraveny." />
+            </children>
+        </HBox>
+    </top>
+    <center>
+        <TableView fx:id="nastrojeTable" prefHeight="420.0" prefWidth="760.0" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn fx:id="typColumn" prefWidth="110.0" text="Typ" />
+                <TableColumn fx:id="druhColumn" prefWidth="150.0" text="Druh" />
+                <TableColumn fx:id="cenaColumn" prefWidth="100.0" text="Cena" />
+                <TableColumn fx:id="zvukColumn" prefWidth="140.0" text="Zvuk" />
+                <TableColumn fx:id="pocetColumn" prefWidth="90.0" text="Pocet" />
+                <TableColumn fx:id="detailColumn" prefWidth="300.0" text="Detail" />
+            </columns>
+            <BorderPane.margin>
+                <Insets bottom="12.0" left="12.0" right="12.0" top="0.0" />
+            </BorderPane.margin>
+        </TableView>
+    </center>
+    <right>
+        <VBox spacing="12.0" prefWidth="320.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="12.0" left="0.0" right="12.0" top="0.0" />
+            </padding>
+            <children>
+                <Label text="Formular nastroja" />
+                <GridPane hgap="10.0" vgap="10.0">
+                    <children>
+                        <Label text="Typ" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <ComboBox fx:id="typComboBox" prefWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                        <Label text="Druh" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="druhField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <Label text="Cena" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField fx:id="cenaField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                        <Label text="Zvuk" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <TextField fx:id="zvukField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                        <Label text="Pocet" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <TextField fx:id="pocetField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                        <Label fx:id="extraField1Label" text="Extra 1" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <TextField fx:id="extraField1" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+                        <Label fx:id="extraField2Label" text="Extra 2" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                        <TextField fx:id="extraField2" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                    </children>
+                </GridPane>
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAdd" text="Pridaj" />
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleUpdate" text="Uprav vybrany" />
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleDelete" text="Zmaz vybrany" />
+            </children>
+        </VBox>
+    </right>
+</BorderPane>

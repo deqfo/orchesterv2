@@ -1,0 +1,3 @@
+Slacikovy;husle;500;piskanie;3;slacikova sekcia
+Strunovy;gitara;300;brnkanie;5;6;standard
+Strunovy;basgitara;800;basy;2;4;drop d

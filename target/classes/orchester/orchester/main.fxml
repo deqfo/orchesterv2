@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
@@ -41,6 +42,23 @@
             </BorderPane.margin>
         </TableView>
     </center>
+    <bottom>
+        <HBox alignment="CENTER_LEFT" spacing="12.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="12.0" left="12.0" right="12.0" top="0.0" />
+            </padding>
+            <children>
+                <TextArea fx:id="vystupArea" editable="false" prefHeight="180.0" prefWidth="760.0" wrapText="true" />
+                <VBox spacing="10.0">
+                    <children>
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleVypisSkladu" text="Vypis skladu" />
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleCenaVystupenia" text="Cena vystupenia" />
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSkladHraj" text="Sklad hraj" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </bottom>
     <right>
         <VBox spacing="12.0" prefWidth="320.0" BorderPane.alignment="CENTER">
             <padding>

@@ -9,6 +9,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import orchester.models.Nastroj;
@@ -58,6 +59,8 @@ public class MainController {
     private TextField extraField2;
     @FXML
     private Label statusLabel;
+    @FXML
+    private TextArea vystupArea;
 
     @FXML
     public void initialize() {
@@ -182,6 +185,24 @@ public class MainController {
         } catch (Exception e) {
             showError("Ukladanie zlyhalo: " + e.getMessage());
         }
+    }
+
+    @FXML
+    private void handleVypisSkladu() {
+        vystupArea.setText(service.vytvorVypisSkladu());
+        statusLabel.setText("Zobrazeny vypis skladu.");
+    }
+
+    @FXML
+    private void handleCenaVystupenia() {
+        vystupArea.setText(service.vytvorCenuVystupenia());
+        statusLabel.setText("Vypocitana cena vystupenia.");
+    }
+
+    @FXML
+    private void handleSkladHraj() {
+        vystupArea.setText(service.vytvorSkladHraj());
+        statusLabel.setText("Zobrazeny vystup sklad hraj.");
     }
 
     private Nastroj createFromForm() {

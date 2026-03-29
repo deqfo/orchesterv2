@@ -1,6 +1,7 @@
 package orchester.service;
 
 import orchester.models.Nastroj;
+import orchester.models.Hrac;
 import orchester.models.SlacikovyNastroj;
 import orchester.models.StrunovyNastroj;
 
@@ -17,10 +18,17 @@ import java.util.List;
 
 public class Service {
 
+    private static final double POCET_HODIN_VYSTUPENIA = 2.0;
+
     private List<Nastroj> nastroje = new ArrayList<>();
+    private List<Hrac> hraci = new ArrayList<>();
 
     public List<Nastroj> getNastroje() {
         return nastroje;
+    }
+
+    public List<Hrac> getHraci() {
+        return hraci;
     }
 
     public void addNastroj(Nastroj nastroj) {
@@ -58,6 +66,9 @@ public class Service {
         for (Nastroj nastroj : nastroje) {
             writer.println(serialize(nastroj));
         }
+        for (Hrac hrac : hraci) {
+            writer.println(hrac.save());
+        }
 
         writer.close();
     }
@@ -80,18 +91,93 @@ public class Service {
         }
     }
 
+    public String vytvorVypisSkladu() {
+        if (nastroje.isEmpty()) {
+            return "Sklad je prazdny.";
+        }
+
+        StringBuilder builder = new StringBuilder("---Databaza nastrojov---\n");
+        double celkovaCena = 0;
+
+        for (Nastroj nastroj : nastroje) {
+            builder.append("Druh: ")
+                    .append(nastroj.getDruh())
+                    .append(", Pocet: ")
+                    .append(nastroj.getPocet())
+                    .append(", Cena: ")
+                    .append(nastroj.getCena())
+                    .append('\n');
+            celkovaCena += nastroj.getPocet() * nastroj.getCena();
+        }
+
+        builder.append("Celkova cena skladu: ").append(celkovaCena);
+        return builder.toString();
+    }
+
+    public String vytvorCenuVystupenia() {
+        if (hraci.isEmpty()) {
+            return "Nie su nacitani hraci pre vypocet ceny vystupenia.";
+        }
+
+        double sucetHodinovychSadziebHracov = 0;
+        for (Hrac hrac : hraci) {
+            sucetHodinovychSadziebHracov += hrac.getHodinovaSadzba();
+        }
+
+        double cenaVystupenia = POCET_HODIN_VYSTUPENIA * sucetHodinovychSadziebHracov;
+        return "---Cena vystupenia---\n"
+                + cenaVystupenia
+                + " (Pocet hodin vystupenia: "
+                + POCET_HODIN_VYSTUPENIA
+                + " x Sucet hodinovych sadzieb hracov: "
+                + sucetHodinovychSadziebHracov
+                + ")";
+    }
+
+    public String vytvorSkladHraj() {
+        if (nastroje.isEmpty()) {
+            return "Sklad je prazdny.";
+        }
+
+        StringBuilder builder = new StringBuilder("---Sklad hraj---\n");
+
+        for (Nastroj nastroj : nastroje) {
+            for (int i = 0; i < nastroj.getPocet(); i++) {
+                builder.append(nastroj.getZvuk()).append(' ');
+            }
+        }
+
+        return builder.toString().trim();
+    }
+
     private void loadFromReader(BufferedReader reader) throws IOException {
         nastroje.clear();
+        hraci.clear();
+
+        List<String> hladaneNazvyNastrojov = new ArrayList<>();
 
         String line;
         while ((line = reader.readLine()) != null) {
             if (!line.isBlank()) {
-                nastroje.add(parseLine(line));
+                parseLine(line, hladaneNazvyNastrojov);
             }
         }
+
+        priradNastrojeHracom(hladaneNazvyNastrojov);
     }
 
-    private Nastroj parseLine(String line) {
+    private void parseLine(String line, List<String> hladaneNazvyNastrojov) {
+        if (line.startsWith("u,")) {
+            String[] parts = line.split(",");
+            if (parts.length < 5) {
+                throw new IllegalArgumentException("Chybaju data hraca pre riadok: " + line);
+            }
+
+            hraci.add(new Hrac(parts));
+            hladaneNazvyNastrojov.add(parts[3]);
+            return;
+        }
+
         String[] parts = line.split(";");
 
         if (parts[0].equals("Slacikovy")) {
@@ -105,7 +191,8 @@ public class Service {
             int pocet = Integer.parseInt(parts[4]);
             String sekcia = parts[5];
 
-            return new SlacikovyNastroj(druh, cena, zvuk, pocet, sekcia);
+            nastroje.add(new SlacikovyNastroj(druh, cena, zvuk, pocet, sekcia));
+            return;
         }
 
         if (parts[0].equals("Strunovy")) {
@@ -120,10 +207,31 @@ public class Service {
             int pocetStrun = Integer.parseInt(parts[5]);
             String ladenie = parts[6];
 
-            return new StrunovyNastroj(druh, cena, zvuk, pocet, pocetStrun, ladenie);
+            nastroje.add(new StrunovyNastroj(druh, cena, zvuk, pocet, pocetStrun, ladenie));
+            return;
         }
 
         throw new IllegalArgumentException("Neznamy typ nastroja: " + line);
+    }
+
+    private void priradNastrojeHracom(List<String> hladaneNazvyNastrojov) {
+        for (int i = 0; i < hraci.size(); i++) {
+            Hrac hrac = hraci.get(i);
+            String hladanyNazov = hladaneNazvyNastrojov.get(i);
+
+            for (Nastroj nastroj : nastroje) {
+                if (nastroj instanceof SlacikovyNastroj) {
+                    SlacikovyNastroj slacikovy = (SlacikovyNastroj) nastroj;
+                    if (slacikovy.getSekcia().equals(hladanyNazov) || slacikovy.getDruh().equals(hladanyNazov)) {
+                        hrac.setNastroje(nastroj);
+                        break;
+                    }
+                } else if (nastroj.getDruh().equals(hladanyNazov)) {
+                    hrac.setNastroje(nastroj);
+                    break;
+                }
+            }
+        }
     }
 
     private String serialize(Nastroj nastroj) {

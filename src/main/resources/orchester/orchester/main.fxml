@@ -9,26 +9,34 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="720.0" prefWidth="1120.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="orchester.controller.MainController">
+<BorderPane prefHeight="720.0" prefWidth="1120.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="orchester.controller.MainController">
     <top>
         <HBox alignment="CENTER_LEFT" spacing="10.0" BorderPane.alignment="CENTER">
             <padding>
                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
             </padding>
             <children>
+            <Label fx:id="statusLabel1" alignment="CENTER" contentDisplay="CENTER" prefHeight="34.0" prefWidth="113.0" text="Orchester" underline="true">
+               <font>
+                  <Font name="Bell MT" size="24.0" />
+               </font>
+            </Label>
                 <Button mnemonicParsing="false" onAction="#handleLoadDefault" text="Nacitaj predvolene" />
                 <Button mnemonicParsing="false" onAction="#handleLoadFile" text="Nacitaj zo suboru" />
                 <Button mnemonicParsing="false" onAction="#handleSaveFile" text="Uloz do suboru" />
-                <Label fx:id="statusLabel" text="Pripraveny." />
+                <Label fx:id="statusLabel" prefHeight="25.0" prefWidth="176.0" text="Pripravený." />
             </children>
         </HBox>
     </top>
     <center>
-        <TableView fx:id="nastrojeTable" prefHeight="420.0" prefWidth="760.0" BorderPane.alignment="CENTER">
+        <TableView fx:id="nastrojeTable" prefHeight="384.0" prefWidth="778.0" BorderPane.alignment="CENTER">
             <columns>
                 <TableColumn fx:id="typColumn" prefWidth="110.0" text="Typ" />
                 <TableColumn fx:id="druhColumn" prefWidth="150.0" text="Druh" />
@@ -43,29 +51,29 @@
         </TableView>
     </center>
     <bottom>
-        <HBox alignment="CENTER_LEFT" spacing="12.0" BorderPane.alignment="CENTER">
+        <HBox alignment="CENTER_LEFT" prefHeight="284.0" prefWidth="1120.0" spacing="12.0" BorderPane.alignment="CENTER">
             <padding>
                 <Insets bottom="12.0" left="12.0" right="12.0" top="0.0" />
             </padding>
             <children>
-                <TextArea fx:id="vystupArea" editable="false" prefHeight="180.0" prefWidth="760.0" wrapText="true" />
-                <VBox spacing="10.0">
+                <TextArea fx:id="vystupArea" editable="false" prefHeight="272.0" prefWidth="782.0" wrapText="true" />
+                <VBox alignment="CENTER" prefHeight="275.0" prefWidth="314.0" spacing="10.0">
                     <children>
                         <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleVypisSkladu" text="Vypis skladu" />
                         <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleCenaVystupenia" text="Cena vystupenia" />
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSkladHraj" text="Sklad hraj" />
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSkladHraj" prefHeight="25.0" prefWidth="139.0" text="Sklad hraj" />
                     </children>
                 </VBox>
             </children>
         </HBox>
     </bottom>
     <right>
-        <VBox spacing="12.0" prefWidth="320.0" BorderPane.alignment="CENTER">
+        <VBox prefHeight="397.0" prefWidth="259.0" spacing="12.0" BorderPane.alignment="CENTER">
             <padding>
                 <Insets bottom="12.0" left="0.0" right="12.0" top="0.0" />
             </padding>
             <children>
-                <Label text="Formular nastroja" />
+                <Label prefHeight="18.0" prefWidth="102.0" text="Formulár nástroja" />
                 <GridPane hgap="10.0" vgap="10.0">
                     <children>
                         <Label text="Typ" GridPane.columnIndex="0" GridPane.rowIndex="0" />
@@ -89,6 +97,19 @@
                         <Label fx:id="extraField2Label" text="Extra 2" GridPane.columnIndex="0" GridPane.rowIndex="6" />
                         <TextField fx:id="extraField2" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                     </children>
+               <columnConstraints>
+                  <ColumnConstraints />
+                  <ColumnConstraints />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
                 </GridPane>
                 <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAdd" text="Pridaj" />
                 <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleUpdate" text="Uprav vybrany" />

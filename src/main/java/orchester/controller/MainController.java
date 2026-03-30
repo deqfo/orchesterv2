@@ -311,7 +311,7 @@ public class MainController {
             extraField2.setManaged(false);
             extraField2.clear();
         } else {
-            extraField1Label.setText("Pocet strun");
+            extraField1Label.setText("Struny");
             extraField2Label.setText("Ladenie");
             extraField1Label.setVisible(true);
             extraField1.setVisible(true);

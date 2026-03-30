@@ -67,7 +67,7 @@ public class Service {
             writer.println(serialize(nastroj));
         }
         for (Hrac hrac : hraci) {
-            writer.println(hrac.save());
+            writer.println(serialize(hrac));
         }
 
         writer.close();
@@ -76,8 +76,10 @@ public class Service {
     public String getTyp(Nastroj nastroj) {
         if (nastroj instanceof SlacikovyNastroj) {
             return "Slacikovy";
-        } else {
+        } else if (nastroj instanceof StrunovyNastroj) {
             return "Strunovy";
+        } else {
+            return "Zakladny";
         }
     }
 
@@ -85,9 +87,11 @@ public class Service {
         if (nastroj instanceof SlacikovyNastroj) {
             SlacikovyNastroj s = (SlacikovyNastroj) nastroj;
             return "Sekcia: " + s.getSekcia();
-        } else {
+        } else if (nastroj instanceof StrunovyNastroj) {
             StrunovyNastroj s = (StrunovyNastroj) nastroj;
             return "Struny: " + s.getPocetStrun() + ", ladenie: " + s.getLadenie();
+        } else {
+            return "Bez extra detailov";
         }
     }
 
@@ -180,6 +184,20 @@ public class Service {
 
         String[] parts = line.split(";");
 
+        if (parts[0].equals("Zakladny")) {
+            if (parts.length < 5) {
+                throw new IllegalArgumentException("Chybaju data pre riadok: " + line);
+            }
+
+            String druh = parts[1];
+            double cena = Double.parseDouble(parts[2]);
+            String zvuk = parts[3];
+            int pocet = Integer.parseInt(parts[4]);
+
+            nastroje.add(new Nastroj(druh, cena, zvuk, pocet));
+            return;
+        }
+
         if (parts[0].equals("Slacikovy")) {
             if (parts.length < 6) {
                 throw new IllegalArgumentException("Chyba sekcia pre riadok: " + line);
@@ -238,9 +256,16 @@ public class Service {
         if (nastroj instanceof SlacikovyNastroj) {
             SlacikovyNastroj s = (SlacikovyNastroj) nastroj;
             return "Slacikovy;" + s.getDruh() + ";" + s.getCena() + ";" + s.getZvuk() + ";" + s.getPocet() + ";" + s.getSekcia();
-        } else {
+        } else if (nastroj instanceof StrunovyNastroj) {
             StrunovyNastroj s = (StrunovyNastroj) nastroj;
             return "Strunovy;" + s.getDruh() + ";" + s.getCena() + ";" + s.getZvuk() + ";" + s.getPocet() + ";" + s.getPocetStrun() + ";" + s.getLadenie();
+        } else {
+            return "Zakladny;" + nastroj.getDruh() + ";" + nastroj.getCena() + ";" + nastroj.getZvuk() + ";" + nastroj.getPocet();
         }
+    }
+
+    private String serialize(Hrac hrac) {
+        String nazovNastroja = hrac.getNastroje() != null ? hrac.getNastroje().getDruh() : "";
+        return "u," + hrac.getMeno() + "," + hrac.getPriezvisko() + "," + nazovNastroja + "," + hrac.getHodinovaSadzba();
     }
 }

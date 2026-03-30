@@ -13,8 +13,15 @@ public class Hrac{
         setHodinovaSadzba(hodinovaSadzba);
     }
 
-    public Hrac(String[] params) {
-        load(params);
+    public Hrac(String[] data) {
+        if (data.length < 5) {
+            throw new IllegalArgumentException("Chybaju data hraca.");
+        }
+
+        setMeno(data[1]);
+        setPriezvisko(data[2]);
+        setNastroje(null);
+        setHodinovaSadzba(Double.parseDouble(data[4]));
     }
 
     public String getMeno() {
@@ -66,16 +73,5 @@ public class Hrac{
         return "Hrac [meno=" + meno + ", priezvisko=" + priezvisko + ", nastroje="
                 + (nastroje != null ? nastroje.toString() : "null")
                 + ", hodinovaSadzba=" + hodinovaSadzba + "]";
-    }
-
-    public void load(String[] data) {
-        setMeno(data[1]);
-        setPriezvisko(data[2]);
-        nastroje = null;
-        setHodinovaSadzba(Double.parseDouble(data[4]));
-    }
-
-    public String save() {
-        return "u," + meno + "," + priezvisko + "," + (nastroje != null ? nastroje.getDruh() : "") + "," + hodinovaSadzba;
     }
 }

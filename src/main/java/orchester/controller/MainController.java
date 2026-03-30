@@ -64,8 +64,8 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        typComboBox.getItems().addAll("Slacikovy", "Strunovy");
-        typComboBox.setValue("Slacikovy");
+        typComboBox.getItems().addAll("Zakladny", "Slacikovy", "Strunovy");
+        typComboBox.setValue("Zakladny");
 
         typColumn.setCellValueFactory(data -> new SimpleStringProperty(service.getTyp(data.getValue())));
         druhColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDruh()));
@@ -232,6 +232,10 @@ public class MainController {
             throw new IllegalArgumentException("Pocet musi byt cele cislo.");
         }
 
+        if (typ.equals("Zakladny")) {
+            return new Nastroj(druh, cena, zvuk, pocet);
+        }
+
         if (typ.equals("Slacikovy")) {
             String sekcia = extraField1.getText().trim();
             if (sekcia.isEmpty()) {
@@ -271,14 +275,17 @@ public class MainController {
             updateExtraFields();
             extraField1.setText(s.getSekcia());
             extraField2.clear();
-        }
-
-        if (nastroj instanceof StrunovyNastroj) {
+        } else if (nastroj instanceof StrunovyNastroj) {
             StrunovyNastroj s = (StrunovyNastroj) nastroj;
             typComboBox.setValue("Strunovy");
             updateExtraFields();
             extraField1.setText(String.valueOf(s.getPocetStrun()));
             extraField2.setText(s.getLadenie());
+        } else {
+            typComboBox.setValue("Zakladny");
+            updateExtraFields();
+            extraField1.clear();
+            extraField2.clear();
         }
     }
 
@@ -288,7 +295,7 @@ public class MainController {
 
     private void clearForm() {
         nastrojeTable.getSelectionModel().clearSelection();
-        typComboBox.setValue("Slacikovy");
+        typComboBox.setValue("Zakladny");
         druhField.clear();
         cenaField.clear();
         zvukField.clear();
@@ -299,7 +306,18 @@ public class MainController {
     }
 
     private void updateExtraFields() {
-        if (typComboBox.getValue().equals("Slacikovy")) {
+        if (typComboBox.getValue().equals("Zakladny")) {
+            extraField1Label.setVisible(false);
+            extraField1.setVisible(false);
+            extraField2Label.setVisible(false);
+            extraField2.setVisible(false);
+            extraField1Label.setManaged(false);
+            extraField1.setManaged(false);
+            extraField2Label.setManaged(false);
+            extraField2.setManaged(false);
+            extraField1.clear();
+            extraField2.clear();
+        } else if (typComboBox.getValue().equals("Slacikovy")) {
             extraField1Label.setText("Sekcia");
             extraField1Label.setVisible(true);
             extraField1.setVisible(true);

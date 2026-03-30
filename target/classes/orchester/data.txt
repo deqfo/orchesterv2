@@ -4,4 +4,4 @@ Strunovy;basgitara;800.0;basy;2;4;drop d
 Strunovy;ugvtfv;52.0;g;5;67;jj
 u,Elias,Bednar,husle,25.0
 u,Anna,Novakova,gitara,30.0
-u,Peter,Basista,basgitara,28.0
+u,,Basista,basgitara,28.0

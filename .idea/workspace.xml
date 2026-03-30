@@ -5,20 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6f926375-f154-498f-b609-1b838ab52cc2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/orchester/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/orchester/controller/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/orchester/service/Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/orchester/service/Service.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/orchester/data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/orchester/data.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/orchester/orchester/main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/orchester/orchester/main.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/module-info.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/orchester/OrchesterApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/orchester/OrchesterApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/orchester/controller/Launcher.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/orchester/controller/Launcher.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/orchester/controller/MainController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/orchester/controller/MainController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/orchester/data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/orchester/data.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/orchester/models/Nastroj.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/orchester/models/Nastroj.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/orchester/models/SlacikovyNastroj.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/orchester/models/SlacikovyNastroj.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/orchester/models/StrunovyNastroj.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/orchester/models/StrunovyNastroj.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/orchester/orchester/main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/orchester/orchester/main.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/orchester/service/Service.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/orchester/service/Service.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/orchester/models/Hrac.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/orchester/models/Hrac.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/orchester/models/Saveable.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +15,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="20" />
+    <option name="cachedIndexableFilesCount" value="22" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -50,27 +39,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Launcher.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Launcher.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\bedna\IdeaProjects\orchesterv2" />
@@ -104,7 +94,9 @@
       <option name="presentableId" value="Default" />
       <updated>1774803455097</updated>
       <workItem from="1774803456205" duration="547000" />
-      <workItem from="1774804031088" duration="1221000" />
+      <workItem from="1774804031088" duration="1279000" />
+      <workItem from="1774814581864" duration="317000" />
+      <workItem from="1774856969748" duration="439000" />
     </task>
     <servers />
   </component>

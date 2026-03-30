@@ -1,6 +1,6 @@
 package orchester.models;
 
-public class Hrac implements Saveable {
+public class Hrac{
     private String meno;
     private String priezvisko;
     private Nastroj nastroje;
@@ -68,7 +68,6 @@ public class Hrac implements Saveable {
                 + ", hodinovaSadzba=" + hodinovaSadzba + "]";
     }
 
-    @Override
     public void load(String[] data) {
         setMeno(data[1]);
         setPriezvisko(data[2]);
@@ -76,7 +75,6 @@ public class Hrac implements Saveable {
         setHodinovaSadzba(Double.parseDouble(data[4]));
     }
 
-    @Override
     public String save() {
         return "u," + meno + "," + priezvisko + "," + (nastroje != null ? nastroje.getDruh() : "") + "," + hodinovaSadzba;
     }

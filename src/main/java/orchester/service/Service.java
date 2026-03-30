@@ -1,7 +1,6 @@
 package orchester.service;
 
 import orchester.models.Nastroj;
-import orchester.models.Hrac;
 import orchester.models.SlacikovyNastroj;
 import orchester.models.StrunovyNastroj;
 
@@ -18,17 +17,10 @@ import java.util.List;
 
 public class Service {
 
-    private static final double POCET_HODIN_VYSTUPENIA = 2.0;
-
     private List<Nastroj> nastroje = new ArrayList<>();
-    private List<Hrac> hraci = new ArrayList<>();
 
     public List<Nastroj> getNastroje() {
         return nastroje;
-    }
-
-    public List<Hrac> getHraci() {
-        return hraci;
     }
 
     public void addNastroj(Nastroj nastroj) {
@@ -65,9 +57,6 @@ public class Service {
 
         for (Nastroj nastroj : nastroje) {
             writer.println(serialize(nastroj));
-        }
-        for (Hrac hrac : hraci) {
-            writer.println(serialize(hrac));
         }
 
         writer.close();
@@ -119,23 +108,18 @@ public class Service {
     }
 
     public String vytvorCenuVystupenia() {
-        if (hraci.isEmpty()) {
-            return "Nie su nacitani hraci pre vypocet ceny vystupenia.";
+        if (nastroje.isEmpty()) {
+            return "Nie su zadane ziadne nastroje pre vypocet ceny vystupenia.";
         }
 
-        double sucetHodinovychSadziebHracov = 0;
-        for (Hrac hrac : hraci) {
-            sucetHodinovychSadziebHracov += hrac.getHodinovaSadzba();
+        double cenaVystupenia = 0;
+        for (Nastroj nastroj : nastroje) {
+            cenaVystupenia += nastroj.getPocet() * nastroj.getCena();
         }
 
-        double cenaVystupenia = POCET_HODIN_VYSTUPENIA * sucetHodinovychSadziebHracov;
         return "---Cena vystupenia---\n"
                 + cenaVystupenia
-                + " (Pocet hodin vystupenia: "
-                + POCET_HODIN_VYSTUPENIA
-                + " x Sucet hodinovych sadzieb hracov: "
-                + sucetHodinovychSadziebHracov
-                + ")";
+                + " (sucet cien vsetkych nastrojov v sklade)";
     }
 
     public String vytvorSkladHraj() {
@@ -156,32 +140,16 @@ public class Service {
 
     private void loadFromReader(BufferedReader reader) throws IOException {
         nastroje.clear();
-        hraci.clear();
-
-        List<String> hladaneNazvyNastrojov = new ArrayList<>();
 
         String line;
         while ((line = reader.readLine()) != null) {
             if (!line.isBlank()) {
-                parseLine(line, hladaneNazvyNastrojov);
+                parseLine(line);
             }
         }
-
-        priradNastrojeHracom(hladaneNazvyNastrojov);
     }
 
-    private void parseLine(String line, List<String> hladaneNazvyNastrojov) {
-        if (line.startsWith("u,")) {
-            String[] parts = line.split(",");
-            if (parts.length < 5) {
-                throw new IllegalArgumentException("Chybaju data hraca pre riadok: " + line);
-            }
-
-            hraci.add(new Hrac(parts));
-            hladaneNazvyNastrojov.add(parts[3]);
-            return;
-        }
-
+    private void parseLine(String line) {
         String[] parts = line.split(";");
 
         if (parts[0].equals("Zakladny")) {
@@ -231,27 +199,6 @@ public class Service {
 
         throw new IllegalArgumentException("Neznamy typ nastroja: " + line);
     }
-
-    private void priradNastrojeHracom(List<String> hladaneNazvyNastrojov) {
-        for (int i = 0; i < hraci.size(); i++) {
-            Hrac hrac = hraci.get(i);
-            String hladanyNazov = hladaneNazvyNastrojov.get(i);
-
-            for (Nastroj nastroj : nastroje) {
-                if (nastroj instanceof SlacikovyNastroj) {
-                    SlacikovyNastroj slacikovy = (SlacikovyNastroj) nastroj;
-                    if (slacikovy.getSekcia().equals(hladanyNazov) || slacikovy.getDruh().equals(hladanyNazov)) {
-                        hrac.setNastroje(nastroj);
-                        break;
-                    }
-                } else if (nastroj.getDruh().equals(hladanyNazov)) {
-                    hrac.setNastroje(nastroj);
-                    break;
-                }
-            }
-        }
-    }
-
     private String serialize(Nastroj nastroj) {
         if (nastroj instanceof SlacikovyNastroj) {
             SlacikovyNastroj s = (SlacikovyNastroj) nastroj;
@@ -262,10 +209,5 @@ public class Service {
         } else {
             return "Zakladny;" + nastroj.getDruh() + ";" + nastroj.getCena() + ";" + nastroj.getZvuk() + ";" + nastroj.getPocet();
         }
-    }
-
-    private String serialize(Hrac hrac) {
-        String nazovNastroja = hrac.getNastroje() != null ? hrac.getNastroje().getDruh() : "";
-        return "u," + hrac.getMeno() + "," + hrac.getPriezvisko() + "," + nazovNastroja + "," + hrac.getHodinovaSadzba();
     }
 }

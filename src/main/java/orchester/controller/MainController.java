@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -11,7 +12,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import orchester.models.Nastroj;
 import orchester.models.SlacikovyNastroj;
 import orchester.models.StrunovyNastroj;
@@ -189,7 +194,7 @@ public class MainController {
 
     @FXML
     private void handleVypisSkladu() {
-        vystupArea.setText(service.vytvorVypisSkladu());
+        showPopupWindow("Vypis skladu", service.vytvorVypisSkladu());
         statusLabel.setText("Zobrazeny vypis skladu.");
     }
 
@@ -347,5 +352,21 @@ public class MainController {
         alert.setHeaderText("Chyba");
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void showPopupWindow(String title, String content) {
+        TextArea textArea = new TextArea(content);
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+
+        VBox root = new VBox(textArea);
+        root.setPadding(new Insets(12));
+
+        Stage popupStage = new Stage();
+        popupStage.initOwner(nastrojeTable.getScene().getWindow());
+        popupStage.initModality(Modality.NONE);
+        popupStage.setTitle(title);
+        popupStage.setScene(new Scene(root, 520, 360));
+        popupStage.show();
     }
 }

@@ -8,9 +8,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/orchester/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/orchester/controller/MainController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/orchester/service/Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/orchester/service/Service.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/orchester/data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/orchester/data.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/orchester/orchester/main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/orchester/orchester/main.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/orchester/data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/orchester/data.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/orchester/controller/MainController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/orchester/controller/MainController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/orchester/service/Service.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/orchester/service/Service.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +103,7 @@
       <workItem from="1774856969748" duration="1246000" />
       <workItem from="1774858553449" duration="3268000" />
       <workItem from="1774870532728" duration="197000" />
-      <workItem from="1774891488365" duration="1062000" />
+      <workItem from="1774891488365" duration="2966000" />
     </task>
     <servers />
   </component>

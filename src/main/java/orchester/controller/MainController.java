@@ -27,6 +27,10 @@ import java.io.IOException;
 
 public class MainController {
 
+    private static String ZAKLADNY = "Zakladny";
+    private static String SLACIKOVY = "Slacikovy";
+    private static String STRUNOVY = "Strunovy";
+
     private Service service = new Service();
 
     @FXML
@@ -69,15 +73,10 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        typComboBox.getItems().addAll("Zakladny", "Slacikovy", "Strunovy");
-        typComboBox.setValue("Zakladny");
+        typComboBox.getItems().addAll(ZAKLADNY, SLACIKOVY, STRUNOVY);
+        typComboBox.setValue(ZAKLADNY);
 
-        typColumn.setCellValueFactory(data -> new SimpleStringProperty(service.getTyp(data.getValue())));
-        druhColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDruh()));
-        cenaColumn.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getCena()));
-        zvukColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getZvuk()));
-        pocetColumn.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getPocet()));
-        detailColumn.setCellValueFactory(data -> new SimpleStringProperty(service.getDetail(data.getValue())));
+        nastavTabulku();
 
         typComboBox.setOnAction(event -> updateExtraFields());
         nastrojeTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> fillForm(newValue));
@@ -222,46 +221,28 @@ public class MainController {
             throw new IllegalArgumentException("Zvuk nesmie byt prazdny.");
         }
 
-        double cena;
-        int pocet;
+        double cena = nacitajCenu();
+        int pocet = nacitajPocet();
 
-        try {
-            cena = Double.parseDouble(cenaField.getText().trim());
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Cena musi byt cislo.");
-        }
-
-        try {
-            pocet = Integer.parseInt(pocetField.getText().trim());
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Pocet musi byt cele cislo.");
-        }
-
-        if (typ.equals("Zakladny")) {
+        if (ZAKLADNY.equals(typ)) {
             return new Nastroj(druh, cena, zvuk, pocet);
         }
 
-        if (typ.equals("Slacikovy")) {
+        if (SLACIKOVY.equals(typ)) {
             String sekcia = extraField1.getText().trim();
             if (sekcia.isEmpty()) {
                 throw new IllegalArgumentException("Sekcia nesmie byt prazdna.");
             }
             return new SlacikovyNastroj(druh, cena, zvuk, pocet, sekcia);
-        } else {
-            int pocetStrun;
-            try {
-                pocetStrun = Integer.parseInt(extraField1.getText().trim());
-            } catch (Exception e) {
-                throw new IllegalArgumentException("Pocet strun musi byt cele cislo.");
-            }
-
-            String ladenie = extraField2.getText().trim();
-            if (ladenie.isEmpty()) {
-                throw new IllegalArgumentException("Ladenie nesmie byt prazdne.");
-            }
-
-            return new StrunovyNastroj(druh, cena, zvuk, pocet, pocetStrun, ladenie);
         }
+
+        int pocetStrun = nacitajPocetStrun();
+        String ladenie = extraField2.getText().trim();
+        if (ladenie.isEmpty()) {
+            throw new IllegalArgumentException("Ladenie nesmie byt prazdne.");
+        }
+
+        return new StrunovyNastroj(druh, cena, zvuk, pocet, pocetStrun, ladenie);
     }
 
     private void fillForm(Nastroj nastroj) {
@@ -276,18 +257,18 @@ public class MainController {
 
         if (nastroj instanceof SlacikovyNastroj) {
             SlacikovyNastroj s = (SlacikovyNastroj) nastroj;
-            typComboBox.setValue("Slacikovy");
+            typComboBox.setValue(SLACIKOVY);
             updateExtraFields();
             extraField1.setText(s.getSekcia());
             extraField2.clear();
         } else if (nastroj instanceof StrunovyNastroj) {
             StrunovyNastroj s = (StrunovyNastroj) nastroj;
-            typComboBox.setValue("Strunovy");
+            typComboBox.setValue(STRUNOVY);
             updateExtraFields();
             extraField1.setText(String.valueOf(s.getPocetStrun()));
             extraField2.setText(s.getLadenie());
         } else {
-            typComboBox.setValue("Zakladny");
+            typComboBox.setValue(ZAKLADNY);
             updateExtraFields();
             extraField1.clear();
             extraField2.clear();
@@ -300,7 +281,7 @@ public class MainController {
 
     private void clearForm() {
         nastrojeTable.getSelectionModel().clearSelection();
-        typComboBox.setValue("Zakladny");
+        typComboBox.setValue(ZAKLADNY);
         druhField.clear();
         cenaField.clear();
         zvukField.clear();
@@ -311,40 +292,25 @@ public class MainController {
     }
 
     private void updateExtraFields() {
-        if (typComboBox.getValue().equals("Zakladny")) {
-            extraField1Label.setVisible(false);
-            extraField1.setVisible(false);
-            extraField2Label.setVisible(false);
-            extraField2.setVisible(false);
-            extraField1Label.setManaged(false);
-            extraField1.setManaged(false);
-            extraField2Label.setManaged(false);
-            extraField2.setManaged(false);
+        String typ = typComboBox.getValue();
+
+        if (ZAKLADNY.equals(typ)) {
+            nastavViditelnostExtraPoloziek(false, false);
             extraField1.clear();
             extraField2.clear();
-        } else if (typComboBox.getValue().equals("Slacikovy")) {
-            extraField1Label.setText("Sekcia");
-            extraField1Label.setVisible(true);
-            extraField1.setVisible(true);
-            extraField1Label.setManaged(true);
-            extraField1.setManaged(true);
-            extraField2Label.setVisible(false);
-            extraField2.setVisible(false);
-            extraField2Label.setManaged(false);
-            extraField2.setManaged(false);
-            extraField2.clear();
-        } else {
-            extraField1Label.setText("Struny");
-            extraField2Label.setText("Ladenie");
-            extraField1Label.setVisible(true);
-            extraField1.setVisible(true);
-            extraField2Label.setVisible(true);
-            extraField2.setVisible(true);
-            extraField1Label.setManaged(true);
-            extraField1.setManaged(true);
-            extraField2Label.setManaged(true);
-            extraField2.setManaged(true);
+            return;
         }
+
+        if (SLACIKOVY.equals(typ)) {
+            extraField1Label.setText("Sekcia");
+            nastavViditelnostExtraPoloziek(true, false);
+            extraField2.clear();
+            return;
+        }
+
+        extraField1Label.setText("Struny");
+        extraField2Label.setText("Ladenie");
+        nastavViditelnostExtraPoloziek(true, true);
     }
 
     private void showError(String message) {
@@ -368,5 +334,50 @@ public class MainController {
         popupStage.setTitle(title);
         popupStage.setScene(new Scene(root, 520, 360));
         popupStage.show();
+    }
+
+    private void nastavTabulku() {
+        typColumn.setCellValueFactory(data -> new SimpleStringProperty(service.getTyp(data.getValue())));
+        druhColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDruh()));
+        cenaColumn.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getCena()));
+        zvukColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getZvuk()));
+        pocetColumn.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getPocet()));
+        detailColumn.setCellValueFactory(data -> new SimpleStringProperty(service.getDetail(data.getValue())));
+    }
+
+    private double nacitajCenu() {
+        try {
+            return Double.parseDouble(cenaField.getText().trim());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Cena musi byt cislo.");
+        }
+    }
+
+    private int nacitajPocet() {
+        try {
+            return Integer.parseInt(pocetField.getText().trim());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Pocet musi byt cele cislo.");
+        }
+    }
+
+    private int nacitajPocetStrun() {
+        try {
+            return Integer.parseInt(extraField1.getText().trim());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Pocet strun musi byt cele cislo.");
+        }
+    }
+
+    private void nastavViditelnostExtraPoloziek(boolean prveViditelne, boolean druheViditelne) {
+        extraField1Label.setVisible(prveViditelne);
+        extraField1.setVisible(prveViditelne);
+        extraField1Label.setManaged(prveViditelne);
+        extraField1.setManaged(prveViditelne);
+
+        extraField2Label.setVisible(druheViditelne);
+        extraField2.setVisible(druheViditelne);
+        extraField2Label.setManaged(druheViditelne);
+        extraField2.setManaged(druheViditelne);
     }
 }

@@ -41,25 +41,23 @@ public class Service {
             throw new IOException("Subor sa nenasiel: " + resourcePath);
         }
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-        loadFromReader(reader);
-        reader.close();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+            loadFromReader(reader);
+        }
     }
 
     public void loadFromFile(Path path) throws IOException {
-        BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
-        loadFromReader(reader);
-        reader.close();
+        try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+            loadFromReader(reader);
+        }
     }
 
     public void saveToFile(Path path) throws IOException {
-        PrintWriter writer = new PrintWriter(Files.newBufferedWriter(path, StandardCharsets.UTF_8));
-
-        for (Nastroj nastroj : nastroje) {
-            writer.println(serialize(nastroj));
+        try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(path, StandardCharsets.UTF_8))) {
+            for (Nastroj nastroj : nastroje) {
+                writer.println(serialize(nastroj));
+            }
         }
-
-        writer.close();
     }
 
     public String getTyp(Nastroj nastroj) {
@@ -90,7 +88,6 @@ public class Service {
         }
 
         StringBuilder builder = new StringBuilder("---Databaza nastrojov---\n");
-        double celkovaCena = 0;
 
         for (Nastroj nastroj : nastroje) {
             builder.append("Druh: ")
@@ -100,10 +97,9 @@ public class Service {
                     .append(", Cena: ")
                     .append(nastroj.getCena())
                     .append('\n');
-            celkovaCena += nastroj.getPocet() * nastroj.getCena();
         }
 
-        builder.append("Celkova cena skladu: ").append(celkovaCena);
+        builder.append("Celkova cena skladu: ").append(vypocitajCelkovuCenu());
         return builder.toString();
     }
 
@@ -111,15 +107,7 @@ public class Service {
         if (nastroje.isEmpty()) {
             return "Nie su zadane ziadne nastroje pre vypocet ceny vystupenia.";
         }
-
-        double cenaVystupenia = 0;
-        for (Nastroj nastroj : nastroje) {
-            cenaVystupenia += nastroj.getPocet() * nastroj.getCena();
-        }
-
-        return "---Cena vystupenia---\n"
-                + cenaVystupenia
-                + " (sucet cien vsetkych nastrojov v sklade)";
+        return "---Cena vystupenia---\n" + vypocitajCelkovuCenu()+ " (sucet cien vsetkych nastrojov v sklade)";
     }
 
     public String vytvorSkladHraj() {
@@ -151,54 +139,68 @@ public class Service {
 
     private void parseLine(String line) {
         String[] parts = line.split(";");
+        String typ = parts[0];
 
-        if (parts[0].equals("Zakladny")) {
-            if (parts.length < 5) {
-                throw new IllegalArgumentException("Chybaju data pre riadok: " + line);
-            }
-
-            String druh = parts[1];
-            double cena = Double.parseDouble(parts[2]);
-            String zvuk = parts[3];
-            int pocet = Integer.parseInt(parts[4]);
-
-            nastroje.add(new Nastroj(druh, cena, zvuk, pocet));
+        if ("Zakladny".equals(typ)) {
+            nacitajZakladnyNastroj(parts, line);
             return;
         }
 
-        if (parts[0].equals("Slacikovy")) {
-            if (parts.length < 6) {
-                throw new IllegalArgumentException("Chyba sekcia pre riadok: " + line);
-            }
-
-            String druh = parts[1];
-            double cena = Double.parseDouble(parts[2]);
-            String zvuk = parts[3];
-            int pocet = Integer.parseInt(parts[4]);
-            String sekcia = parts[5];
-
-            nastroje.add(new SlacikovyNastroj(druh, cena, zvuk, pocet, sekcia));
+        if ("Slacikovy".equals(typ)) {
+            nacitajSlacikovyNastroj(parts, line);
             return;
         }
 
-        if (parts[0].equals("Strunovy")) {
-            if (parts.length < 7) {
-                throw new IllegalArgumentException("Chybaju data pre riadok: " + line);
-            }
-
-            String druh = parts[1];
-            double cena = Double.parseDouble(parts[2]);
-            String zvuk = parts[3];
-            int pocet = Integer.parseInt(parts[4]);
-            int pocetStrun = Integer.parseInt(parts[5]);
-            String ladenie = parts[6];
-
-            nastroje.add(new StrunovyNastroj(druh, cena, zvuk, pocet, pocetStrun, ladenie));
+        if ("Strunovy".equals(typ)) {
+            nacitajStrunovyNastroj(parts, line);
             return;
         }
 
         throw new IllegalArgumentException("Neznamy typ nastroja: " + line);
     }
+
+    private void nacitajZakladnyNastroj(String[] parts, String line) {
+        if (parts.length < 5) {
+            throw new IllegalArgumentException("Chybaju data pre riadok: " + line);
+        }
+
+        String druh = parts[1];
+        double cena = Double.parseDouble(parts[2]);
+        String zvuk = parts[3];
+        int pocet = Integer.parseInt(parts[4]);
+
+        nastroje.add(new Nastroj(druh, cena, zvuk, pocet));
+    }
+
+    private void nacitajSlacikovyNastroj(String[] parts, String line) {
+        if (parts.length < 6) {
+            throw new IllegalArgumentException("Chyba sekcia pre riadok: " + line);
+        }
+
+        String druh = parts[1];
+        double cena = Double.parseDouble(parts[2]);
+        String zvuk = parts[3];
+        int pocet = Integer.parseInt(parts[4]);
+        String sekcia = parts[5];
+
+        nastroje.add(new SlacikovyNastroj(druh, cena, zvuk, pocet, sekcia));
+    }
+
+    private void nacitajStrunovyNastroj(String[] parts, String line) {
+        if (parts.length < 7) {
+            throw new IllegalArgumentException("Chybaju data pre riadok: " + line);
+        }
+
+        String druh = parts[1];
+        double cena = Double.parseDouble(parts[2]);
+        String zvuk = parts[3];
+        int pocet = Integer.parseInt(parts[4]);
+        int pocetStrun = Integer.parseInt(parts[5]);
+        String ladenie = parts[6];
+
+        nastroje.add(new StrunovyNastroj(druh, cena, zvuk, pocet, pocetStrun, ladenie));
+    }
+
     private String serialize(Nastroj nastroj) {
         if (nastroj instanceof SlacikovyNastroj) {
             SlacikovyNastroj s = (SlacikovyNastroj) nastroj;
@@ -209,5 +211,15 @@ public class Service {
         } else {
             return "Zakladny;" + nastroj.getDruh() + ";" + nastroj.getCena() + ";" + nastroj.getZvuk() + ";" + nastroj.getPocet();
         }
+    }
+
+    private double vypocitajCelkovuCenu() {
+        double celkovaCena = 0;
+
+        for (Nastroj nastroj : nastroje) {
+            celkovaCena += nastroj.getPocet() * nastroj.getCena();
+        }
+
+        return celkovaCena;
     }
 }

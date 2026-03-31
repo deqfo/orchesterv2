@@ -1,5 +1,3 @@
 Slacikovy;husle;500.0;piskanie;3;slacikova sekcia
 Strunovy;gitara;300.0;brnkanie;5;6;standard
 Strunovy;basgitara;800.0;basy;2;4;drop d
-Strunovy;ugvtfv;52.0;g;5;67;jj
-Zakladny;Klavír;234.0;pin;2

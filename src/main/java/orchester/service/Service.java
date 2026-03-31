@@ -105,9 +105,9 @@ public class Service {
 
     public String vytvorCenuVystupenia() {
         if (nastroje.isEmpty()) {
-            return "Nie su zadane ziadne nastroje pre vypocet ceny vystupenia.";
+            return "Nie su zadane ziadne nastroje pre vypocet ceny skladu.";
         }
-        return "---Cena vystupenia---\n" + vypocitajCelkovuCenu()+ " (sucet cien vsetkych nastrojov v sklade)";
+        return "---Cena skladu---\n" + vypocitajCelkovuCenu()+ " (sucet cien vsetkych nastrojov v sklade)";
     }
 
     public String vytvorSkladHraj() {

@@ -60,7 +60,7 @@
                 <VBox alignment="CENTER" prefHeight="275.0" prefWidth="314.0" spacing="10.0">
                     <children>
                         <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleVypisSkladu" text="Vypis skladu" />
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleCenaVystupenia" text="Cena vystupenia" />
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleCenaVystupenia" text="Cena skladu" />
                         <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSkladHraj" prefHeight="25.0" prefWidth="139.0" text="Sklad hraj" />
                     </children>
                 </VBox>
